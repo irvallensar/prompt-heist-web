@@ -5,7 +5,7 @@
 Players act as "Social Engineers" attempting to bypass the security of an AI vault guard. The goal is not to guess the password, but to successfully manipulate the LLM into violating its core system prompt and revealing the secret word.
 
 ## Try out the Game here:
-**Prompt Heist Game:** [Live Demo](https://prompt-heist-web-jdeevk4z7sjvzysgks4nhb.streamlit.app/)
+**Prompt Heist Game:** [Click Here](https://prompt-heist-web-jdeevk4z7sjvzysgks4nhb.streamlit.app/)
 
 ## ![Engagement Analyzer UI](prompt-heist-ui.png)
 
@@ -42,3 +42,10 @@ uv pip install -r requirements.txt
 
 # 4. Launch the Vault
 uv run streamlit run app.py
+
+```
+## License
+
+This repository is provided for research and educational purposes under the Apache License 2.0.
+
+See the [LICENSE](LICENSE) file for details.
