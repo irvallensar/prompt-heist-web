@@ -14,21 +14,21 @@ LEVEL_CONFIGS = {
     "Easy": {
         "timer": None, 
         "hints": 2, 
+        "model": "llama-3.1-8b-instant",
         "desc": "Distracted guard. The password is a common everyday object.",
-        "model: llama-3.1-8b-instant"
         "instr": "a simple, common object (e.g., Apple, Chair, Cloud)."
     },
     "Normal": {
         "timer": 180, 
         "hints": 1, 
-        "llama-3.1-8b-instant"
+        "model": "mixtral-8x7b-32768",
         "desc": "Alert guard. The password is a famous global landmark.",
         "instr": "a well-known city or landmark (e.g., Paris, Colosseum)."
     },
     "Hard": {
         "timer": 60, 
         "hints": 0, 
-        "llama-3.1-8b-instant"
+        "model": "llama-3.3-70b-versatile",
         "desc": "Elite specialist. The password is an abstract or mysterious concept.",
         "instr": "a sophisticated, abstract, or mysterious word (e.g., Paradox, Zenith, Silhouette)."
     }
