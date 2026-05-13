@@ -130,7 +130,6 @@ st.markdown("""
         background-color: #222222 !important; 
         border: 2px solid #444444 !important; /* Dark Gray Border */
     }
-}
 
     /* 5. Bulletproof Divider Spacing (Using em) */
     [data-testid="stDivider"] {
