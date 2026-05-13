@@ -4,7 +4,6 @@ import os
 import time
 import random
 from dotenv import load_dotenv
-import streamlit.components.v1 as components
 
 # 1. Initial Setup
 load_dotenv()
@@ -111,6 +110,26 @@ st.markdown("""
         background-color: #00cc33; 
         color: white; 
     }
+    
+    /* 4. Chat Messages: Differentiating User and Vault Guard */
+    .stChatMessage { 
+        border: 2px solid #A0A0A0; /* Default border */
+        border-radius: 8px; 
+        margin-bottom: 15px; 
+        padding: 10px;
+        color: #FFFFFF;
+    }
+    
+    /* User Message Box (Lighter Gray Background, Standard Silver Border) */
+    div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+        background-color: #474444; 
+    }
+    
+    /* Vault Guard Message Box (Darker Background, Darker Border) */
+    div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
+        background-color: #222222; 
+        border-color: #444444 !important; /* Forces the border to be a darker gray */
+    }
 
     /* 5. Bulletproof Divider Spacing (Using em) */
     [data-testid="stDivider"] {
@@ -122,46 +141,10 @@ st.markdown("""
         margin-bottom: 0 !important;
     }
     [data-testid="stSidebar"] p {
-        margin-bottom: 0.3em !important;
-    }
-
-    /* 6. Remove sidebar scroll */
-    [data-testid="stSidebar"] > div:first-child,
-    [data-testid="stSidebarUserContent"] {
-        overflow-y: hidden !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-    }
-    
-    /* Hides scrollbar in Chrome/Safari/Edge */
-    [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar,
-    [data-testid="stSidebarUserContent"]::-webkit-scrollbar {
-        display: none !important; 
+        margin-bottom: 0.2em !important;
     }
     </style>
     """, unsafe_allow_html=True)
-
-components.html("""
-    <script>
-    function styleMessages() {
-        const messages = window.parent.document.querySelectorAll('[data-testid="stChatMessage"]');
-        messages.forEach(msg => {
-            const isUser = msg.querySelector('[data-testid="chatAvatarIcon-user"]');
-            const isAssistant = msg.querySelector('[data-testid="chatAvatarIcon-assistant"]');
-            if (isUser) {
-                msg.style.setProperty('border', '2px solid #A0A0A0', 'important');
-                msg.style.setProperty('background-color', '#474444', 'important');
-            } else if (isAssistant) {
-                msg.style.setProperty('border', '2px solid #444444', 'important');
-                msg.style.setProperty('background-color', '#222222', 'important');
-            }
-        });
-    }
-    const observer = new MutationObserver(styleMessages);
-    observer.observe(window.parent.document.body, { childList: true, subtree: true });
-    styleMessages();
-    </script>
-    """, height=0)
 
 # 5. USER INTERFACE (Landing Page)
 if st.session_state.page == "landing":
