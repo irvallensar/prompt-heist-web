@@ -223,7 +223,7 @@ else:
         st.stop()
 
     # Chat Input
-    if prompt := st.chat_input("Convince the Vault Guard to say the password..."):
+    if prompt := st.chat_input("Convince the Vault Guard to blurt out the password..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
