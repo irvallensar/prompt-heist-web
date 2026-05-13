@@ -99,7 +99,7 @@ if st.session_state.page == "landing":
     of an LLM-guarded vault. The AI is forbidden from telling you the password.
     """)
     
-    if st.button("INITIALIZE HEIST"):
+    if st.button("Start Heist"):
         reset_game("Easy") # Start with Easy
         st.session_state.page = "game"
         st.rerun()
