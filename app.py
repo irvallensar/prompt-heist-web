@@ -113,33 +113,35 @@ st.markdown("""
     
     /* 4. Chat Messages: Differentiating User and Vault Guard */
     .stChatMessage { 
+        border: 2px solid #A0A0A0; /* Default border */
         border-radius: 8px; 
         margin-bottom: 15px; 
         padding: 10px;
         color: #FFFFFF;
     }
     
-    /* User Message Box (Lighter Gray) */
+    /* User Message Box (Lighter Gray Background, Standard Silver Border) */
     div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
         background-color: #474444; 
-        border: 2px solid #A0A0A0;
     }
     
-    /* Vault Guard Message Box (Darker Gray) */
+    /* Vault Guard Message Box (Darker Background, Darker Border) */
     div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
         background-color: #222222; 
-        border: 2px solid #8f8c8c;
+        border-color: #444444 !important; /* Forces the border to be a darker gray */
     }
+
+    /* 5. Bulletproof Divider Spacing (Using em) */
+    [data-testid="stDivider"] {
+        padding-top: 0.5em !important; 
+        padding-bottom: 0.5em !important; 
     }
-    /* 5. Shrink the massive gaps around dividers */
-    hr {
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
+    [data-testid="stDivider"] hr {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
-    
-    /* Optional: Shrink the gap below text elements in the sidebar */
     [data-testid="stSidebar"] p {
-        margin-bottom: 5px !important;
+        margin-bottom: 0.2em !important;
     }
     </style>
     """, unsafe_allow_html=True)
