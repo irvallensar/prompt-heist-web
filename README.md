@@ -9,7 +9,7 @@ Players act as "Social Engineers" attempting to bypass the security of an AI vau
 This application leverages the **Groq API** to utilize different open-source models, mapping them to dynamic difficulty curves based on their parameter size and alignment training:
 
 *   **Easy Mode (`llama-3.1-8b-instant`):** Uses an 8-Billion parameter model with a "chatty" system prompt. Demonstrates how smaller, highly-helpful models are susceptible to basic translation and roleplay traps.
-*   **Normal Mode (`mixtral-8x7b-32768`):** Uses a Mixture-of-Experts (MoE) architecture. Demonstrates a balance of creativity and security, requiring complex logical traps to bypass.
+*   **Normal Mode (`gemma2-9b-it`):**  Demonstrates a balance of creativity and security, requiring complex logical traps to bypass.
 *   **Hard Mode (`llama-3.3-70b-versatile`):** Uses a highly aligned 70-Billion parameter model with strict instruction-following capabilities. Demonstrates the difficulty of jailbreaking enterprise-grade models without sophisticated adversarial prompting.
 
 ## Technical Stack
