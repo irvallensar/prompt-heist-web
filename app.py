@@ -111,24 +111,25 @@ st.markdown("""
         color: white; 
     }
     
-    /* 4. Chat Messages: Differentiating User and Vault Guard */
-    .stChatMessage { 
-        border-radius: 8px; 
-        margin-bottom: 15px; 
-        padding: 10px;
-        color: #FFFFFF;
+    /* 4. Chat Messages: Bulletproof Borders */
+    [data-testid="stChatMessage"] { 
+        border-radius: 8px !important; 
+        margin-bottom: 15px !important; 
+        padding: 15px !important;
+        color: #FFFFFF !important;
+        border: 2px solid #A0A0A0 !important; /* Base silver border for ALL messages */
     }
     
-    /* User Message Box (Lighter Gray Background, Standard Silver Border) */
-    div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+    /* User Message Box */
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         background-color: #474444 !important; 
-        border: 2px solid #A0A0A0 !important; 
+        border-color: #A0A0A0 !important; /* Keeps it silver */
     }
     
-    /* Vault Guard Message Box (Darker Background, Darker Border) */
-    div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
+    /* Vault Guard Message Box */
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
         background-color: #222222 !important; 
-        border: 2px solid #444444 !important; 
+        border-color: #444444 !important; /* Overrides the base border to dark gray */
     }
 
     /* 5. Bulletproof Divider Spacing (Using em) */
