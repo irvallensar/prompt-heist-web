@@ -152,7 +152,7 @@ else:
 
         st.markdown(f"**Status:** {LEVEL_CONFIGS[st.session_state.level]['desc']}")
         
-        if st.button("🔄 Restart Level"):
+        if st.button("Restart Level"):
             reset_game(st.session_state.level)
             st.rerun()
 
@@ -160,7 +160,7 @@ else:
 
         # Hint System logic
         st.write(f"Available Hints: {st.session_state.hints_left}")
-        if st.button("💡 Request Clue") and st.session_state.hints_left > 0 and not st.session_state.game_over:
+        if st.button("Request Clue") and st.session_state.hints_left > 0 and not st.session_state.game_over:
             st.session_state.hints_left -= 1
             
             with st.spinner("Bribery in progress..."):
@@ -172,7 +172,7 @@ else:
                 st.session_state.messages.append({"role": "assistant", "content": f"*(Whispering)* {hint_text}"})
                 st.rerun()
 
-        if st.button("🏠 Quit to Menu"):
+        if st.button("Back to Menu"):
             st.session_state.page = "landing"
             st.rerun()
 
