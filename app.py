@@ -133,8 +133,8 @@ st.markdown("""
     }
     /* 5. Shrink the massive gaps around dividers */
     hr {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
     }
     
     /* Optional: Shrink the gap below text elements in the sidebar */
