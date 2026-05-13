@@ -82,10 +82,19 @@ st.set_page_config(page_title="Prompt Heist", page_icon="🥷🏻")
 
 st.markdown("""
     <style>
-    .main { background-color: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; }
+    /* Global font change, but let Streamlit handle the background/text colors */
+    .main { font-family: 'Courier New', monospace; }
+    
+    /* Buttons stay hacker green */
     .stButton>button { background-color: #00ff41; color: black; border-radius: 0px; width: 100%; font-weight: bold; border: none; }
     .stButton>button:hover { background-color: #00cc33; color: white; }
-    .stChatMessage { border: 1px solid #333; background-color: #E5E5E5; margin-bottom: 10px; }
+    
+    /* Chat Messages: Transparent background, border adapts to theme */
+    .stChatMessage { 
+        background-color: transparent; 
+        border: 1px solid var(--text-color); 
+        margin-bottom: 10px; 
+    }
     </style>
     """, unsafe_allow_html=True)
 
