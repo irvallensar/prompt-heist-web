@@ -82,7 +82,7 @@ st.set_page_config(page_title="Prompt Heist", page_icon="🥷🏻")
 
 st.markdown("""
     <style>
-    /* 1. Light Silver Background for the entire app */
+    /* 1. Black Background for the entire app */
     .stApp { 
         background-color: #111; 
     }
@@ -108,7 +108,7 @@ st.markdown("""
     
     /* 4. Chat Messages: The border is back! */
     .stChatMessage { 
-        background-color: #1111; /* White inside the chat box for readability */
+        background-color: #D3D3D3; /* White inside the chat box for readability */
         border: 2px solid #A0A0A0; /* The nice, distinct border */
         border-radius: 8px; 
         margin-bottom: 15px; 
