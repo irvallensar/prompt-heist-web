@@ -7,7 +7,7 @@ Players act as "Social Engineers" attempting to bypass the security of an AI vau
 ## Try out the Game here:
 **Prompt Heist Game:** [Click Here](https://prompt-heist-web-jdeevk4z7sjvzysgks4nhb.streamlit.app/)
 
-## ![Engagement Analyzer UI](prompt-heist-ui.png)
+## ![Engagement Analyzer UI](prompt-heist-web-2.png)
 
 ## System Architecture & Models
 
