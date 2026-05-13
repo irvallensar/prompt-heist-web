@@ -117,19 +117,19 @@ st.markdown("""
         margin-bottom: 15px !important; 
         padding: 15px !important;
         color: #FFFFFF !important;
-        border: 2px solid #A0A0A0 !important; /* Base silver border for ALL messages */
+        /* No border here anymore */
     }
-    
+
     /* User Message Box */
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         background-color: #474444 !important; 
-        border-color: #A0A0A0 !important; /* Keeps it silver */
+        border: 2px solid #A0A0A0 !important;
     }
-    
+
     /* Vault Guard Message Box */
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
         background-color: #222222 !important; 
-        border-color: #444444 !important; /* Overrides the base border to dark gray */
+        border: 2px solid #444444 !important;
     }
 
     /* 5. Bulletproof Divider Spacing (Using em) */
@@ -142,7 +142,7 @@ st.markdown("""
         margin-bottom: 0 !important;
     }
     [data-testid="stSidebar"] p {
-        margin-bottom: 0.2em !important;
+        margin-bottom: 0.3em !important;
     }
 
     /* 6. Remove sidebar scroll */
