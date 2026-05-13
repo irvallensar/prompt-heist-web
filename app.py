@@ -111,26 +111,25 @@ st.markdown("""
         color: white; 
     }
     
-    /* 4. Chat Messages: Bulletproof Borders */
-    /* Base: set border for ALL messages */
+    /* 4. Chat Messages: Targeting the Screen Reader Labels */
     [data-testid="stChatMessage"] { 
         border-radius: 8px !important; 
         margin-bottom: 15px !important; 
         padding: 15px !important;
         color: #FFFFFF !important;
-        border: 2px solid #A0A0A0 !important;
     }
-
-    /* User: same specificity, but declared AFTER — wins by cascade */
-    .stApp [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    
+    /* User Message Box (Looks for the 'user' aria-label) */
+    [data-testid="stChatMessage"]:has([aria-label="user avatar"]) {
         background-color: #474444 !important; 
-        border: 2px solid #A0A0A0 !important;
+        border: 2px solid #A0A0A0 !important; /* Silver Border */
     }
-
-    /* Assistant: .stApp prefix bumps specificity above the base rule */
-    .stApp [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-        background-color: red !important; 
-        border: 2px solid #444444 !important;
+    
+    /* Vault Guard Message Box (Looks for the 'assistant' aria-label) */
+    [data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) {
+        background-color: #222222 !important; 
+        border: 2px solid #444444 !important; /* Dark Gray Border */
+    }
 }
 
     /* 5. Bulletproof Divider Spacing (Using em) */
