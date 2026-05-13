@@ -84,7 +84,7 @@ st.markdown("""
     <style>
     /* 1. Black Background for the entire app */
     .stApp { 
-        background-color: #111; 
+        background-color: #474444; 
     }
 
     /* 2. Global font change */
