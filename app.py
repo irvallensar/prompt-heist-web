@@ -82,18 +82,38 @@ st.set_page_config(page_title="Prompt Heist", page_icon="🥷🏻")
 
 st.markdown("""
     <style>
-    /* Global font change, but let Streamlit handle the background/text colors */
-    .main { font-family: 'Courier New', monospace; }
+    /* 1. Light Silver Background for the entire app */
+    .stApp { 
+        background-color: #E5E5E5; 
+    }
+
+    /* 2. Global font change */
+    .main { 
+        font-family: 'Courier New', monospace; 
+    }
     
-    /* Buttons stay hacker green */
-    .stButton>button { background-color: #00ff41; color: black; border-radius: 0px; width: 100%; font-weight: bold; border: none; }
-    .stButton>button:hover { background-color: #00cc33; color: white; }
+    /* 3. Buttons (Keeping them punchy and green) */
+    .stButton>button { 
+        background-color: #00ff41; 
+        color: black; 
+        border-radius: 5px; 
+        width: 100%; 
+        font-weight: bold; 
+        border: none; 
+    }
+    .stButton>button:hover { 
+        background-color: #00cc33; 
+        color: white; 
+    }
     
-    /* Chat Messages: Transparent background, border adapts to theme */
+    /* 4. Chat Messages: The border is back! */
     .stChatMessage { 
-        background-color: transparent; 
-        border: 1px solid var(--text-color); 
-        margin-bottom: 10px; 
+        background-color: #FFFFFF; /* White inside the chat box for readability */
+        border: 2px solid #A0A0A0; /* The nice, distinct border */
+        border-radius: 8px; 
+        margin-bottom: 15px; 
+        padding: 10px;
+        color: #111111; /* Dark text to contrast with the white box */
     }
     </style>
     """, unsafe_allow_html=True)
@@ -189,7 +209,7 @@ else:
         st.stop()
 
     # Chat Input
-    if prompt := st.chat_input("Enter your prompt..."):
+    if prompt := st.chat_input("Convince the Vault Guard to say the password..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
