@@ -133,6 +133,7 @@ if st.session_state.page == "landing":
         st.session_state.page = "game"
         st.rerun()
 
+else:
 # 6. USER INTERFACE (Game Page)
 
     # Sidebar (Mission Control)
