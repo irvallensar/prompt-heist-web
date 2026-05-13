@@ -111,26 +111,15 @@ st.markdown("""
         background-color: #00cc33; 
         color: white; 
     }
-    
-    # --- JAVASCRIPT UI WORKAROUND ---
-    # Notice the triple quotes starting the string below!
-    js_code = """
+
+    components.html("""
     <script>
     function styleMessages() {
-        const parentDoc = window.parent.document;
-        const messages = parentDoc.querySelectorAll('[data-testid="stChatMessage"]');
-        
+        const messages = window.parent.document.querySelectorAll('[data-testid="stChatMessage"]');
         messages.forEach(msg => {
             const isUser = msg.querySelector('[data-testid="chatAvatarIcon-user"]');
             const isAssistant = msg.querySelector('[data-testid="chatAvatarIcon-assistant"]');
-            
-            // Base styling
-            msg.style.setProperty('border-radius', '8px', 'important');
-            msg.style.setProperty('padding', '15px', 'important');
-            msg.style.setProperty('color', '#FFFFFF', 'important');
-            msg.style.setProperty('margin-bottom', '15px', 'important');
-            
-            // Apply the specific colors
+        
             if (isUser) {
                 msg.style.setProperty('border', '2px solid #A0A0A0', 'important');
                 msg.style.setProperty('background-color', '#474444', 'important');
@@ -141,16 +130,11 @@ st.markdown("""
         });
     }
 
-    const parentDoc = window.parent.document;
     const observer = new MutationObserver(styleMessages);
-    
-    observer.observe(parentDoc.body, { childList: true, subtree: true });
+    observer.observe(window.parent.document.body, { childList: true, subtree: true });
     styleMessages();
     </script>
-    """
-    
-    # This takes the string we just made and runs it silently
-    components.html(js_code, height=0, width=0)
+    """, height=0)
 
     /* 5. Bulletproof Divider Spacing (Using em) */
     [data-testid="stDivider"] {
