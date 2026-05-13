@@ -4,7 +4,6 @@ import os
 import time
 import random
 from dotenv import load_dotenv
-from streamlit_autorefresh import st_autorefresh
 
 # 1. Initial Setup
 load_dotenv()
