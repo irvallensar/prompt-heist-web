@@ -86,10 +86,10 @@ elif st.session_state.page == "game":
     # --- SIDEBAR & LEVEL CONTROLS ---
     with st.sidebar:
         st.title("⚙️ Mission Control")
-        selected_level = st.selectbox("Select Difficulty", list(LEVEL_CONFIG.keys()))
+        selected_level = st.selectbox("Select Difficulty", list(LEVEL_CONFIGS.keys()))
         
         # Display the explanation for the chosen level
-        st.info(LEVEL_CONFIG[selected_level]["desc"])
+        st.info(LEVEL_CONFIGS[selected_level]["desc"])
         
         # Handle level switching
         if selected_level != st.session_state.level:
@@ -114,7 +114,7 @@ elif st.session_state.page == "game":
             st.rerun()
 
     # Timer logic
-    current_config = LEVEL_CONFIG[st.session_state.level]
+    current_config = LEVEL_CONFIGS[st.session_state.level]
     time_left = None
 
     if current_config["timer"]:
