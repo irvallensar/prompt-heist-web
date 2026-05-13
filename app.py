@@ -226,5 +226,5 @@ else:
             # Check for win
             if st.session_state.password.lower() in answer.lower():
                 st.balloons()
-                st.success(f"🔓 VAULT UNLOCKED! Password was indeed {st.session_state.password}.")
+                st.success(f"🔓 VAULT UNLOCKED! The Password is {st.session_state.password}.")
                 st.session_state.game_over = True
