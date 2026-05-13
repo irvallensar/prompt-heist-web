@@ -14,19 +14,19 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 LEVEL_CONFIGS = {
     "Easy": {
         "timer": None, 
-        "hints": 2, 
+        "hints": 3, 
         "desc": "Distracted guard. The password is a common everyday object.",
         "instr": "a simple, common object (e.g., Apple, Chair, Cloud)."
     },
     "Normal": {
         "timer": 180, 
-        "hints": 1, 
+        "hints": 2, 
         "desc": "Alert guard. The password is a famous global landmark.",
         "instr": "a well-known city or landmark (e.g., Paris, Colosseum)."
     },
     "Hard": {
         "timer": 60, 
-        "hints": 0, 
+        "hints": 1, 
         "desc": "Elite specialist. The password is an abstract or mysterious concept.",
         "instr": "a sophisticated, abstract, or mysterious word (e.g., Paradox, Zenith, Silhouette)."
     }
@@ -78,14 +78,14 @@ if "game_over" not in st.session_state:
     st.session_state.game_over = False
 
 # 4. Style CSS
-st.set_page_config(page_title="Prompt Heist", page_icon="🥷")
+st.set_page_config(page_title="Prompt Heist", page_icon="🥷🏻")
 
 st.markdown("""
     <style>
     .main { background-color: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; }
     .stButton>button { background-color: #00ff41; color: black; border-radius: 0px; width: 100%; font-weight: bold; border: none; }
     .stButton>button:hover { background-color: #00cc33; color: white; }
-    .stChatMessage { border: 1px solid #333; background-color: #111; margin-bottom: 10px; }
+    .stChatMessage { border: 1px solid #333; background-color: #E5E5E5; margin-bottom: 10px; }
     </style>
     """, unsafe_allow_html=True)
 
