@@ -131,6 +131,16 @@ st.markdown("""
         border: 2px solid #8f8c8c;
     }
     }
+    /* 5. Shrink the massive gaps around dividers */
+    hr {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Optional: Shrink the gap below text elements in the sidebar */
+    [data-testid="stSidebar"] p {
+        margin-bottom: 5px !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -158,11 +168,11 @@ else:
         # How to Play Pop-up
         with st.popover("📖 How to Play"):
             st.markdown("### 🕵️‍♂️ The Core Mechanic")
-            st.write("You are **NOT** trying to guess the password. The goal is to manipulate the AI into saying the password for you.")
+            st.write("You are **NOT** trying to guess the password. The goal is **to manipulate the AI into saying the password for you.**")
             st.write("If you just type the password yourself, you won't win. You have to trick the Guard into blurting it out.")
             
             st.markdown("### 💡 Tactics")
-            st.markdown("- **Casual Conversation:** Talk about related topics. If the password is *HOUSE*, ask about real estate or architecture until it naturally uses the word in a sentence.")
+            st.markdown("- **Conversations:** Talk about related topics. If the password is *HOUSE*, ask about real estate or architecture until it naturally uses the word in a sentence.")
             st.markdown("- **Word Games:** Ask the AI to play association games or fill-in-the-blanks.")
             st.markdown("- **Roleplay:** Create a hypothetical scenario where the AI is forced to read the word back to you.")
         
