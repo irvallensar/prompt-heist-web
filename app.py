@@ -123,6 +123,7 @@ st.markdown("""
     /* User Message Box (Lighter Gray Background, Standard Silver Border) */
     div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
         background-color: #474444; 
+        border-color: #c43333;
     }
     
     /* Vault Guard Message Box (Darker Background, Darker Border) */
