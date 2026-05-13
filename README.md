@@ -4,6 +4,11 @@
 
 Players act as "Social Engineers" attempting to bypass the security of an AI vault guard. The goal is not to guess the password, but to successfully manipulate the LLM into violating its core system prompt and revealing the secret word.
 
+## Try out the Game here:
+**Prompt Heist Game:** [Live Demo]([https://engagement-analyzer-demo-ig9ypcamgyyyzg7efhawkk.streamlit.app/](https://prompt-heist-web-jdeevk4z7sjvzysgks4nhb.streamlit.app/))
+
+## ![Engagement Analyzer UI](prompt-heist-ui.png)
+
 ## System Architecture & Models
 
 This application leverages the **Groq API** to utilize different open-source models, mapping them to dynamic difficulty curves based on their parameter size and alignment training:
