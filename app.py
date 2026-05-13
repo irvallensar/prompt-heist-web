@@ -84,7 +84,7 @@ st.markdown("""
     <style>
     /* 1. Black Background for the entire app */
     .stApp { 
-        background-color: #474444; 
+        background-color: #111; 
     }
 
     /* 2. Global font change */
@@ -108,7 +108,7 @@ st.markdown("""
     
     /* 4. Chat Messages: The border is back! */
     .stChatMessage { 
-        background-color: #D3D3D3; /* White inside the chat box for readability */
+        background-color: #474444; 
         border: 2px solid #A0A0A0; /* The nice, distinct border */
         border-radius: 8px; 
         margin-bottom: 15px; 
