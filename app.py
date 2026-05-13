@@ -113,11 +113,10 @@ st.markdown("""
     }
     
     # --- JAVASCRIPT UI WORKAROUND ---
-    # This runs in a hidden iframe and targets the parent window to style the chat
+    # Notice the triple quotes starting the string below!
     js_code = """
     <script>
     function styleMessages() {
-        // Must target window.parent.document to escape the Streamlit iframe
         const parentDoc = window.parent.document;
         const messages = parentDoc.querySelectorAll('[data-testid="stChatMessage"]');
         
@@ -125,7 +124,7 @@ st.markdown("""
             const isUser = msg.querySelector('[data-testid="chatAvatarIcon-user"]');
             const isAssistant = msg.querySelector('[data-testid="chatAvatarIcon-assistant"]');
             
-            // Base styling for all messages (forces the box shape and text color)
+            // Base styling
             msg.style.setProperty('border-radius', '8px', 'important');
             msg.style.setProperty('padding', '15px', 'important');
             msg.style.setProperty('color', '#FFFFFF', 'important');
@@ -145,15 +144,12 @@ st.markdown("""
     const parentDoc = window.parent.document;
     const observer = new MutationObserver(styleMessages);
     
-    // Watch the main Streamlit app body for new chat messages appearing
     observer.observe(parentDoc.body, { childList: true, subtree: true });
-    
-    // Run once immediately on load
     styleMessages();
     </script>
     """
     
-    # Render the script silently (0 height/width hides the iframe)
+    # This takes the string we just made and runs it silently
     components.html(js_code, height=0, width=0)
 
     /* 5. Bulletproof Divider Spacing (Using em) */
