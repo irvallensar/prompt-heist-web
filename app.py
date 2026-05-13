@@ -112,25 +112,26 @@ st.markdown("""
     }
     
     /* 4. Chat Messages: Bulletproof Borders */
+    /* Base: set border for ALL messages */
     [data-testid="stChatMessage"] { 
         border-radius: 8px !important; 
         margin-bottom: 15px !important; 
         padding: 15px !important;
         color: #FFFFFF !important;
-        /* No border here anymore */
+        border: 2px solid #A0A0A0 !important;
     }
 
-    /* User Message Box */
-    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    /* User: same specificity, but declared AFTER — wins by cascade */
+    .stApp [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         background-color: #474444 !important; 
         border: 2px solid #A0A0A0 !important;
     }
 
-    /* Vault Guard Message Box */
-    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+    /* Assistant: .stApp prefix bumps specificity above the base rule */
+    .stApp [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
         background-color: #222222 !important; 
         border: 2px solid #444444 !important;
-    }
+}
 
     /* 5. Bulletproof Divider Spacing (Using em) */
     [data-testid="stDivider"] {
