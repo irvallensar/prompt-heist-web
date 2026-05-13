@@ -134,10 +134,6 @@ if st.session_state.page == "landing":
         st.rerun()
 
 # 6. USER INTERFACE (Game Page)
-else:
-    # Real-time refresh for the timer
-    if not st.session_state.game_over and LEVEL_CONFIGS[st.session_state.level]["timer"]:
-        st_autorefresh(interval=1000, key="timer_counter")
 
     # Sidebar (Mission Control)
     with st.sidebar:
