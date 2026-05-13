@@ -117,7 +117,7 @@ st.markdown("""
         margin-bottom: 15px; 
         padding: 10px;
         color: #FFFFFF;
-        border: 2px solid #444444
+        border: 2px solid #A0A0A0
     }
     
     /* User Message Box (Lighter Gray Background, Standard Silver Border) */
