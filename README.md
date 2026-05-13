@@ -1,4 +1,4 @@
-# PROMPT HEIST
+# ⛓️⛓️ PROMPT HEIST ⛓️⛓️
 
 **Prompt Heist** is an interactive educational game designed to demonstrate the mechanics of Prompt Injection, Jailbreaking, and Large Language Model (LLM) alignment guardrails. 
 
