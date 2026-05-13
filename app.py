@@ -162,7 +162,6 @@ else:
             reset_game(st.session_state.level)
             st.rerun()
 
-        st.divider()
         if st.session_state.level == "Easy":
             st.markdown("🟢 **Encryption:** SHA-256 (Vulnerable)")
             st.markdown("🟢 **Firewall:** Offline")
@@ -172,6 +171,8 @@ else:
         else:
             st.markdown("🔴 **Encryption:** Quantum-Resistant (Locked)")
             st.markdown("🔴 **Firewall:** Maximum")
+
+        st.divider()
 
         # Hint System logic
         st.write(f"Available Hints: {st.session_state.hints_left}")
