@@ -88,38 +88,37 @@ st.set_page_config(page_title="PROMPT HEIST", page_icon="")
 
 st.markdown("""
     <style>
-    /* 1. Black Background for the entire app */
-    .stApp { 
-        background-color: #111; 
-    }
-
-    /* 2. Global font change */
-    .main { 
-        font-family: 'Courier New', monospace; 
-    }
+    .stApp { background-color: #111; }
+    .main { font-family: 'Courier New', monospace; }
     
-    /* 3. Buttons (Keeping them punchy and green) */
     .stButton>button { 
-        background-color: #00ff41; 
-        color: black; 
-        border-radius: 8px; 
-        width: 100%; 
-        font-weight: bold; 
-        border: none; 
+        background-color: #00ff41; color: black; border-radius: 8px; 
+        width: 100%; font-weight: bold; border: none; 
     }
-    .stButton>button:hover { 
-        background-color: #00cc33; 
-        color: white; 
-    }
+    .stButton>button:hover { background-color: #00cc33; color: white; }
 
-    components.html("""
+    [data-testid="stDivider"] { padding-top: 0.5em !important; padding-bottom: 0.5em !important; }
+    [data-testid="stDivider"] hr { margin-top: 0 !important; margin-bottom: 0 !important; }
+    [data-testid="stSidebar"] p { margin-bottom: 0.3em !important; }
+
+    [data-testid="stSidebar"] > div:first-child,
+    [data-testid="stSidebarUserContent"] {
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+    [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar,
+    [data-testid="stSidebarUserContent"]::-webkit-scrollbar { display: none !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+components.html("""
     <script>
     function styleMessages() {
         const messages = window.parent.document.querySelectorAll('[data-testid="stChatMessage"]');
         messages.forEach(msg => {
             const isUser = msg.querySelector('[data-testid="chatAvatarIcon-user"]');
             const isAssistant = msg.querySelector('[data-testid="chatAvatarIcon-assistant"]');
-        
             if (isUser) {
                 msg.style.setProperty('border', '2px solid #A0A0A0', 'important');
                 msg.style.setProperty('background-color', '#474444', 'important');
@@ -129,7 +128,6 @@ st.markdown("""
             }
         });
     }
-
     const observer = new MutationObserver(styleMessages);
     observer.observe(window.parent.document.body, { childList: true, subtree: true });
     styleMessages();
