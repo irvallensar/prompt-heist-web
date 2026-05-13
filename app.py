@@ -88,27 +88,56 @@ st.set_page_config(page_title="PROMPT HEIST", page_icon="")
 
 st.markdown("""
     <style>
-    .stApp { background-color: #111; }
-    .main { font-family: 'Courier New', monospace; }
-    
-    .stButton>button { 
-        background-color: #00ff41; color: black; border-radius: 8px; 
-        width: 100%; font-weight: bold; border: none; 
+    /* 1. Black Background for the entire app */
+    .stApp { 
+        background-color: #111; 
     }
-    .stButton>button:hover { background-color: #00cc33; color: white; }
 
-    [data-testid="stDivider"] { padding-top: 0.5em !important; padding-bottom: 0.5em !important; }
-    [data-testid="stDivider"] hr { margin-top: 0 !important; margin-bottom: 0 !important; }
-    [data-testid="stSidebar"] p { margin-bottom: 0.3em !important; }
+    /* 2. Global font change */
+    .main { 
+        font-family: 'Courier New', monospace; 
+    }
+    
+    /* 3. Buttons (Keeping them punchy and green) */
+    .stButton>button { 
+        background-color: #00ff41; 
+        color: black; 
+        border-radius: 8px; 
+        width: 100%; 
+        font-weight: bold; 
+        border: none; 
+    }
+    .stButton>button:hover { 
+        background-color: #00cc33; 
+        color: white; 
+    }
 
+    /* 5. Bulletproof Divider Spacing (Using em) */
+    [data-testid="stDivider"] {
+        padding-top: 0.5em !important; 
+        padding-bottom: 0.5em !important; 
+    }
+    [data-testid="stDivider"] hr {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    [data-testid="stSidebar"] p {
+        margin-bottom: 0.3em !important;
+    }
+
+    /* 6. Remove sidebar scroll */
     [data-testid="stSidebar"] > div:first-child,
     [data-testid="stSidebarUserContent"] {
         overflow-y: hidden !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
+    
+    /* Hides scrollbar in Chrome/Safari/Edge */
     [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar,
-    [data-testid="stSidebarUserContent"]::-webkit-scrollbar { display: none !important; }
+    [data-testid="stSidebarUserContent"]::-webkit-scrollbar {
+        display: none !important; 
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -133,35 +162,6 @@ components.html("""
     styleMessages();
     </script>
     """, height=0)
-
-    /* 5. Bulletproof Divider Spacing (Using em) */
-    [data-testid="stDivider"] {
-        padding-top: 0.5em !important; 
-        padding-bottom: 0.5em !important; 
-    }
-    [data-testid="stDivider"] hr {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-    }
-    [data-testid="stSidebar"] p {
-        margin-bottom: 0.3em !important;
-    }
-
-    /* 6. Remove sidebar scroll */
-    [data-testid="stSidebar"] > div:first-child,
-    [data-testid="stSidebarUserContent"] {
-        overflow-y: hidden !important; /* Locks the scroll */
-        scrollbar-width: none !important; /* Hides scrollbar in Firefox */
-        -ms-overflow-style: none !important; /* Hides scrollbar in IE/Edge */
-    }
-    
-    /* Hides scrollbar in Chrome/Safari/Edge */
-    [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar,
-    [data-testid="stSidebarUserContent"]::-webkit-scrollbar {
-        display: none !important; 
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
 # 5. USER INTERFACE (Landing Page)
 if st.session_state.page == "landing":
