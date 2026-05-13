@@ -89,7 +89,7 @@ st.markdown("""
     <style>
     /* Main App Background */
     .stApp { background-color: #111111; }
-    .main { font-family: 'Courier New', monospace; }
+    .main { }
     
     /* Buttons */
     .stButton>button { background-color: #00ff41; color: black; border-radius: 5px; width: 100%; font-weight: bold; border: none; }
@@ -111,13 +111,12 @@ st.markdown("""
         padding: 12px 18px;
         border-radius: 18px;
         max-width: 75%;
-        font-family: 'Courier New', monospace;
         font-size: 15px;
         line-height: 1.5;
     }
     .user-bubble {
-        background-color: #00ff41; /* Hacker green */
-        color: #111111; /* Dark text */
+        background-color: #333131; 
+        color: #ffffff; 
         border-bottom-right-radius: 2px; /* Chat tail effect */
     }
     .guard-bubble {
