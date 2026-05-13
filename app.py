@@ -4,6 +4,7 @@ import os
 import time
 import random
 from dotenv import load_dotenv
+import streamlit.components.v1 as components
 
 # 1. Initial Setup
 load_dotenv()
@@ -111,25 +112,49 @@ st.markdown("""
         color: white; 
     }
     
-    /* 4. Chat Messages: Targeting the Screen Reader Labels */
-    [data-testid="stChatMessage"] { 
-        border-radius: 8px !important; 
-        margin-bottom: 15px !important; 
-        padding: 15px !important;
-        color: #FFFFFF !important;
+    # --- JAVASCRIPT UI WORKAROUND ---
+    # This runs in a hidden iframe and targets the parent window to style the chat
+    js_code = """
+    <script>
+    function styleMessages() {
+        // Must target window.parent.document to escape the Streamlit iframe
+        const parentDoc = window.parent.document;
+        const messages = parentDoc.querySelectorAll('[data-testid="stChatMessage"]');
+        
+        messages.forEach(msg => {
+            const isUser = msg.querySelector('[data-testid="chatAvatarIcon-user"]');
+            const isAssistant = msg.querySelector('[data-testid="chatAvatarIcon-assistant"]');
+            
+            // Base styling for all messages (forces the box shape and text color)
+            msg.style.setProperty('border-radius', '8px', 'important');
+            msg.style.setProperty('padding', '15px', 'important');
+            msg.style.setProperty('color', '#FFFFFF', 'important');
+            msg.style.setProperty('margin-bottom', '15px', 'important');
+            
+            // Apply the specific colors
+            if (isUser) {
+                msg.style.setProperty('border', '2px solid #A0A0A0', 'important');
+                msg.style.setProperty('background-color', '#474444', 'important');
+            } else if (isAssistant) {
+                msg.style.setProperty('border', '2px solid #444444', 'important');
+                msg.style.setProperty('background-color', '#222222', 'important');
+            }
+        });
     }
+
+    const parentDoc = window.parent.document;
+    const observer = new MutationObserver(styleMessages);
     
-    /* User Message Box (Looks for the 'user' aria-label) */
-    [data-testid="stChatMessage"]:has([aria-label="user avatar"]) {
-        background-color: #474444 !important; 
-        border: 2px solid #A0A0A0 !important; /* Silver Border */
-    }
+    // Watch the main Streamlit app body for new chat messages appearing
+    observer.observe(parentDoc.body, { childList: true, subtree: true });
     
-    /* Vault Guard Message Box (Looks for the 'assistant' aria-label) */
-    [data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) {
-        background-color: #222222 !important; 
-        border: 2px solid #444444 !important; /* Dark Gray Border */
-    }
+    // Run once immediately on load
+    styleMessages();
+    </script>
+    """
+    
+    # Render the script silently (0 height/width hides the iframe)
+    components.html(js_code, height=0, width=0)
 
     /* 5. Bulletproof Divider Spacing (Using em) */
     [data-testid="stDivider"] {
