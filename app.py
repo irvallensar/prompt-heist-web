@@ -129,7 +129,7 @@ st.markdown("""
 
     /* Assistant: .stApp prefix bumps specificity above the base rule */
     .stApp [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-        background-color: #222222 !important; 
+        background-color: red !important; 
         border: 2px solid #444444 !important;
 }
 
