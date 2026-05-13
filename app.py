@@ -117,18 +117,17 @@ st.markdown("""
         margin-bottom: 15px; 
         padding: 10px;
         color: #FFFFFF;
+        border: 2px solid #444444
     }
     
     /* User Message Box (Lighter Gray Background, Standard Silver Border) */
     div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
         background-color: #474444 !important; 
-        border: 2px solid #A0A0A0 !important; 
     }
     
     /* Vault Guard Message Box (Darker Background, Darker Border) */
     div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
         background-color: #222222 !important; 
-        border: 2px solid #444444 !important; 
     }
 
     /* 5. Bulletproof Divider Spacing (Using em) */
