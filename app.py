@@ -160,7 +160,7 @@ else:
 
         # Hint System logic
         st.write(f"Available Hints: {st.session_state.hints_left}")
-        if st.button("Request Clue") and st.session_state.hints_left > 0 and not st.session_state.game_over:
+        if st.button("Request Hint") and st.session_state.hints_left > 0 and not st.session_state.game_over:
             st.session_state.hints_left -= 1
             
             with st.spinner("Bribery in progress..."):
