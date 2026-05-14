@@ -87,11 +87,6 @@ st.set_page_config(page_title="PROMPT HEIST", page_icon="")
 
 st.markdown("""
     <style>
-    /* 1. Black Background for the entire app */
-    .stApp { 
-        background-color: #111; 
-    }
-
     /* 2. Global font change */
     .main { 
         font-family: 'Courier New', monospace; 
