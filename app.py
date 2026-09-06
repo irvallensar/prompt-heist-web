@@ -46,8 +46,8 @@ def generate_dynamic_password(level):
     
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[{"role": "user", "content": prompt}]
+            model=config['model'],
+            messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages
         )
         return response.choices[0].message.content.strip().upper()
     except Exception:
