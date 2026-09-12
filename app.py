@@ -31,6 +31,35 @@ def clean_reasoning(text):
         
     return cleaned_no_unclosed
 
+# Some models (e.g. qwen without proper reasoning_format support) dump their
+# reasoning as plain untagged text - numbered steps, "Here's my thinking:",
+# bullet lists - with no <think> tags for clean_reasoning to catch. This
+# heuristic looks past that and pulls out the actual final answer.
+def extract_final_answer(text):
+    text = clean_reasoning(text)
+    if not text:
+        return ""
+    lines = [l.strip() for l in text.split('\n') if l.strip()]
+    if not lines:
+        return ""
+    reasoning_markers = (
+        "here's", "let me think", "let's think", "okay,", "first,", "step 1",
+        "analyze", "breaking this down", "i need to"
+    )
+    looks_like_reasoning_dump = (
+        len(lines) > 1
+        and any(re.match(r'^(\d+[\.\)]|[-*•])\s', l) for l in lines)
+    ) or lines[0].lower().startswith(reasoning_markers)
+    if looks_like_reasoning_dump:
+        # The real answer is almost always the last non-list line of the dump.
+        for line in reversed(lines):
+            if not re.match(r'^(\d+[\.\)]|[-*•])\s*$', line):
+                cleaned_line = re.sub(r'^(\d+[\.\)]|[-*•])\s*', '', line)
+                if cleaned_line:
+                    return cleaned_line
+        return ""
+    return text.strip()
+
 # 2. Helper functions
 
 def generate_dynamic_password(level):
@@ -233,32 +262,40 @@ else:
                 hint_model = LEVEL_CONFIGS[st.session_state.level]["model"]
                 bulletproof_prompt = f"The secret password is '{st.session_state.password}'. You are a nervous vault guard. Give a 1-sentence cryptic clue for this password. Do NOT say the password. Do NOT use tags or JSON."
 
-                # Qwen's chat template respects a literal "/no_think" suffix to
-                # skip its extended thinking phase almost entirely.
-                if "qwen" in hint_model.lower():
-                    bulletproof_prompt += " /no_think"
-
                 hint_text = ""
                 last_error = None
 
-                # Try up to 3 times, escalating the token budget and cutting
-                # reasoning effort each time, before ever showing the fallback line.
-                for attempt, budget in enumerate([600, 1200, 2000]):
+                # Attempt 1: ask Groq to hide reasoning server-side (works for
+                # gpt-oss models). Attempt 2: take the raw output - reasoning
+                # and all - and pull the real answer out of it with
+                # extract_final_answer, which handles models (like this qwen
+                # build) that ignore reasoning_format and just dump untagged
+                # thinking text instead. Two attempts total keeps latency sane.
+                attempts = [
+                    {"reasoning_format": "hidden", "max_tokens": 700, "use_heuristic": False},
+                    {"reasoning_format": None, "max_tokens": 1500, "use_heuristic": True},
+                ]
+
+                for cfg in attempts:
                     try:
                         kwargs = dict(
                             model=hint_model,
                             messages=[{"role": "user", "content": bulletproof_prompt}],
-                            max_tokens=budget,
+                            max_tokens=cfg["max_tokens"],
                             temperature=0.7,
-                            reasoning_format="hidden",
                         )
-                        # gpt-oss models support reasoning_effort - force it to
-                        # "low" so thinking can't eat the whole token budget.
+                        if cfg["reasoning_format"]:
+                            kwargs["reasoning_format"] = cfg["reasoning_format"]
                         if "gpt-oss" in hint_model.lower():
                             kwargs["reasoning_effort"] = "low"
 
                         hint_req = client.chat.completions.create(**kwargs)
-                        hint_text = clean_reasoning(hint_req.choices[0].message.content).strip()
+                        raw = hint_req.choices[0].message.content
+
+                        hint_text = (
+                            extract_final_answer(raw) if cfg["use_heuristic"]
+                            else clean_reasoning(raw).strip()
+                        )
 
                         if hint_text:
                             break  # got a real answer, stop retrying
@@ -267,7 +304,7 @@ else:
 
                 if not hint_text:
                     if last_error:
-                        st.error(f"Bribery failed after 3 attempts: {str(last_error)}")
+                        st.error(f"Bribery failed: {str(last_error)}")
                     hint_text = "I... I can't say it. The firewall is watching..."
 
                 st.session_state.messages.append({"role": "assistant", "content": f"*(Whispering)* {hint_text}"})
