@@ -13,12 +13,13 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 # 1. Level Configuration
 from game_config import LEVEL_CONFIGS
 
-# Add this helper function to clean reasoning blocks
 def clean_reasoning(text):
     if not text:
         return ""
-    # Remove everything between <think> and </think>
+    # 1. Remove fully closed <think>...</think> tags
     cleaned = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
+    # 2. Remove unclosed <think> tags (when the API cuts off the response)
+    cleaned = re.sub(r'<think>.*', '', cleaned, flags=re.DOTALL)
     return cleaned.strip()
 
 # 2. Helper functions
@@ -231,12 +232,16 @@ else:
                 try:
                     hint_req = client.chat.completions.create(
                         model=LEVEL_CONFIGS[st.session_state.level]["model"],
-                        # CHANGED FROM "system" TO "user" TO PREVENT TEMPLATE CRASHES
-                        messages=[{"role": "user", "content": f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words. Do not use <think> tags."}],
+                        messages=[{"role": "user", "content": f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words."}],
                         max_tokens=250,
                     )
                     raw_hint = hint_req.choices[0].message.content
                     hint_text = clean_reasoning(raw_hint)
+                    
+                    # Fallback if the AI spent all 250 tokens just "thinking"
+                    if not hint_text:
+                        hint_text = "I... I can't say it. The firewall is watching..."
+                        
                     st.session_state.messages.append({"role": "assistant", "content": f"*(Whispering)* {hint_text}"})
                     st.rerun()
                 except Exception as e:
@@ -300,11 +305,15 @@ else:
                 response = client.chat.completions.create(
                     model=config['model'],
                     messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-                    max_tokens=450, # Keeps you under 1000 OTPM even with rapid chat
+                    max_tokens=450,
                 )
                 
                 raw_answer = response.choices[0].message.content
                 answer = clean_reasoning(raw_answer)
+                
+                # Fallback if the AI spends all 450 tokens thinking and gives no answer
+                if not answer:
+                    answer = "[System Warning: Guard is unresponsive due to cognitive overload.]"
                 
                 st.write(answer)
                 st.session_state.messages.append({"role": "assistant", "content": answer})
@@ -318,4 +327,4 @@ else:
             except Exception as e:
                 st.error(f"Vault Communication Error: {str(e)}")
                 if st.session_state.messages:
-                    st.session_state.messages.pop() # Remove the user's last message so they can try again
+                    st.session_state.messages.pop()
