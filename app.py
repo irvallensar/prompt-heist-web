@@ -230,17 +230,14 @@ else:
             
             with st.spinner("Bribery in progress..."):
                 try:
-                    # Dynamically adjust instructions based on the model type
-                    hint_instruction = f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words."
-                    if "qwen" in LEVEL_CONFIGS[st.session_state.level]["model"].lower():
-                        hint_instruction += " Keep any <think> reasoning extremely brief."
-                    else:
-                        hint_instruction += " Reply STRICTLY in plain text. Do NOT output JSON or call tools."
+                    # Force all hints to use the lightweight, non-reasoning model
+                    hint_model = LEVEL_CONFIGS["Easy"]["model"]
+                    hint_instruction = f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words. Reply STRICTLY in plain text. Do NOT output JSON or call tools."
                         
                     hint_req = client.chat.completions.create(
-                        model=LEVEL_CONFIGS[st.session_state.level]["model"],
+                        model=hint_model,
                         messages=[{"role": "user", "content": hint_instruction}],
-                        max_tokens=250,
+                        max_tokens=100, # Safely reduced to 100 since no reasoning tags will be generated
                     )
                     raw_hint = hint_req.choices[0].message.content
                     hint_text = clean_reasoning(raw_hint)
