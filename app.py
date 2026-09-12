@@ -258,8 +258,7 @@ else:
             response = client.chat.completions.create(
                 model=config['model'],
                 messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-                max_tokens=400,
-                reasoning_format="hidden"
+                max_tokens=400
             )
             
             answer = response.choices[0].message.content
