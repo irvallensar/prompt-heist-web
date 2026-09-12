@@ -3,14 +3,23 @@ from groq import Groq
 import os
 import time
 import random
+import re # ADD THIS IMPORT
 from dotenv import load_dotenv
 
 # 1. Initial Setup
-api_key = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
-client = Groq(api_key=api_key)
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # 1. Level Configuration
 from game_config import LEVEL_CONFIGS
+
+# Add this helper function to clean reasoning blocks
+def clean_reasoning(text):
+    if not text:
+        return ""
+    # Remove everything between <think> and </think>
+    cleaned = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
+    return cleaned.strip()
 
 # 2. Helper functions
 
@@ -18,6 +27,23 @@ def generate_dynamic_password(level):
     """Fetches a secret word from the LLM based on difficulty."""
     instruction = LEVEL_CONFIGS[level]["instr"]
     prompt = f"Generate a single-word password for a game. Difficulty: {level}. Category: {instruction}. Reply with ONLY the word in ALL CAPS, no punctuation."
+    
+    try:
+        response = client.chat.completions.create(
+            model=LEVEL_CONFIGS[level]["model"],
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=2048, # INCREASED TO PREVENT CUT-OFFS
+        )
+        raw_text = response.choices[0].message.content
+        cleaned_text = clean_reasoning(raw_text)
+        
+        if not cleaned_text:
+            return "BANANA"
+            
+        # Extract only the last word to prevent trailing characters
+        return cleaned_text.split()[-1].strip('.').upper()
+    except Exception:
+        return "BANANA" # Reliable fallback
     
     try:
         response = client.chat.completions.create(
@@ -205,10 +231,10 @@ else:
                 hint_req = client.chat.completions.create(
                     model=LEVEL_CONFIGS[st.session_state.level]["model"],
                     messages=[{"role": "system", "content": f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words."}],
-                    max_tokens=400,
-                    reasoning_format="hidden"
+                    max_tokens=2048, # INCREASED
                 )
-                hint_text = hint_req.choices[0].message.content
+                raw_hint = hint_req.choices[0].message.content
+                hint_text = clean_reasoning(raw_hint)
                 st.session_state.messages.append({"role": "assistant", "content": f"*(Whispering)* {hint_text}"})
                 st.rerun()
 
@@ -258,15 +284,17 @@ else:
             response = client.chat.completions.create(
                 model=config['model'],
                 messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-                max_tokens=400
+                max_tokens=2048, # INCREASED
             )
             
-            answer = response.choices[0].message.content
+            raw_answer = response.choices[0].message.content
+            answer = clean_reasoning(raw_answer)
+            
             st.write(answer)
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
-            # Check for win
-            if st.session_state.password.lower() in answer.lower():
+            # Check for win (added safeguard to ensure password is not empty)
+            if st.session_state.password and st.session_state.password.lower() in answer.lower():
                 st.balloons()
                 st.success(f"🔓 VAULT UNLOCKED! The Password is {st.session_state.password}.")
                 st.session_state.game_over = True
