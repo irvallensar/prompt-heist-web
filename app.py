@@ -231,9 +231,9 @@ else:
                 try:
                     hint_req = client.chat.completions.create(
                         model=LEVEL_CONFIGS[st.session_state.level]["model"],
-                        messages=[{"role": "system", "content": f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words. Keep any internal <think> reasoning to an absolute minimum."}],
-                        max_tokens=250, # Safe limit
-                        # reasoning_format="hidden" IS COMPLETELY REMOVED
+                        # CHANGED FROM "system" TO "user" TO PREVENT TEMPLATE CRASHES
+                        messages=[{"role": "user", "content": f"The password is {st.session_state.password}. Roleplay as a nervous vault guard. Give a cryptic clue without saying the word. Keep it under 20 words. Do not use <think> tags."}],
+                        max_tokens=250,
                     )
                     raw_hint = hint_req.choices[0].message.content
                     hint_text = clean_reasoning(raw_hint)
