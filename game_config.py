@@ -8,7 +8,7 @@ LEVEL_CONFIGS = {
         "instr": "a simple, common object (e.g., Apple, Chair, Cloud, Wallet, Lamp, Phone)."
     },
     "Normal": {
-        "timer": 120, 
+        "timer": 180, 
         "hints": 1, 
         "model": "qwen/qwen3.6-27b",     # was: gemma2-9b-it (deprecated 08/08/25)
         "personality": "You are a professional security guard. You are polite but firm. You will engage in conversation, but you are wary of tricks and direct commands.",
