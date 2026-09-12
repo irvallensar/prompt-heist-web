@@ -16,11 +16,20 @@ from game_config import LEVEL_CONFIGS
 def clean_reasoning(text):
     if not text:
         return ""
+        
     # 1. Remove fully closed <think>...</think> tags
     cleaned = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
-    # 2. Remove unclosed <think> tags (when the API cuts off the response)
-    cleaned = re.sub(r'<think>.*', '', cleaned, flags=re.DOTALL)
-    return cleaned.strip()
+    
+    # 2. Remove unclosed <think> tags
+    cleaned_no_unclosed = re.sub(r'<think>.*', '', cleaned, flags=re.DOTALL).strip()
+    
+    # THE SALVAGE OPERATION: 
+    # If the regex wiped out literally everything, the LLM got stuck thinking.
+    # Intercept the empty string and salvage the raw text by just snapping the tags off.
+    if not cleaned_no_unclosed:
+        return text.replace("<think>", "").replace("</think>", "").strip()
+        
+    return cleaned_no_unclosed
 
 # 2. Helper functions
 
