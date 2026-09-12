@@ -247,19 +247,30 @@ else:
 
     # Timer Calculation
     time_limit = LEVEL_CONFIGS[st.session_state.level]["timer"]
-    if time_limit and not st.session_state.game_over:
+    
+    @st.fragment(run_every=1)
+    def live_timer(limit):
+        # Prevent the timer from running if the game is already over
+        if st.session_state.game_over:
+            return
+            
         if st.session_state.start_time is None:
             st.session_state.start_time = time.time()
         
         elapsed = time.time() - st.session_state.start_time
-        remaining = max(0, int(time_limit - elapsed))
+        remaining = max(0, int(limit - elapsed))
         
         if remaining <= 0:
             st.session_state.game_over = True
-            st.rerun()
+            st.rerun() # Force a full app rerun to trigger the Game Over state
         
-        st.progress(remaining / time_limit, text=f"⏳ SYSTEM LOCKOUT IN: {remaining}s")
+        st.progress(remaining / limit, text=f"⏳ SYSTEM LOCKOUT IN: {remaining}s")
 
+    # Call the fragment if a timer exists for this level
+    if time_limit and not st.session_state.game_over:
+        live_timer(time_limit)
+        
+        
     # Display Chat History
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
