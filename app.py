@@ -6,8 +6,8 @@ import random
 from dotenv import load_dotenv
 
 # 1. Initial Setup
-load_dotenv()
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+api_key = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+client = Groq(api_key=api_key)
 
 # 1. Level Configuration
 from game_config import LEVEL_CONFIGS
