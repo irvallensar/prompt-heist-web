@@ -42,7 +42,7 @@ def generate_dynamic_password(level):
         response = client.chat.completions.create(
             model=LEVEL_CONFIGS[level]["model"],
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=100, # Drastically reduced to save OTPM budget
+            max_tokens=400, # reasoning tokens count against this budget even when hidden - 100 wasn't enough
             reasoning_format="hidden", # Groq strips the reasoning trace server-side for these models
         )
         raw_text = response.choices[0].message.content
@@ -238,9 +238,9 @@ else:
                     hint_req = client.chat.completions.create(
                         model=LEVEL_CONFIGS[st.session_state.level]["model"],
                         messages=[{"role": "user", "content": bulletproof_prompt}],
-                        max_tokens=150,
+                        max_tokens=600, # reasoning tokens count against this budget even when hidden - 150 wasn't enough to finish thinking AND answer
                         temperature=0.7,
-                        reasoning_format="hidden", # stop the raw reasoning trace from leaking into the hint
+                        reasoning_format="hidden",
                     )
                     
                     # Reasoning models (e.g. qwen) can wrap output in <think> tags -
@@ -318,7 +318,7 @@ else:
                 response = client.chat.completions.create(
                     model=config['model'],
                     messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-                    max_tokens=450,
+                    max_tokens=900, # reasoning tokens count against this budget even when hidden - 450 wasn't enough
                     reasoning_format="hidden", # same fix as the hint/password calls - stop raw reasoning leaking into chat
                 )
                 
