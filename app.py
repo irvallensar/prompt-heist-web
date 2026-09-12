@@ -43,6 +43,7 @@ def generate_dynamic_password(level):
             model=LEVEL_CONFIGS[level]["model"],
             messages=[{"role": "user", "content": prompt}],
             max_tokens=100, # Drastically reduced to save OTPM budget
+            reasoning_format="hidden", # Groq strips the reasoning trace server-side for these models
         )
         raw_text = response.choices[0].message.content
         cleaned_text = clean_reasoning(raw_text)
@@ -50,19 +51,10 @@ def generate_dynamic_password(level):
         if not cleaned_text:
             return "BANANA"
             
-        # Extract only the last word to prevent trailing characters
-        return cleaned_text.split()[-1].strip('.').upper()
-    except Exception:
-        return "BANANA" # Reliable fallback
-    
-    try:
-        response = client.chat.completions.create(
-            model=LEVEL_CONFIGS[level]["model"],
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=400,
-            reasoning_format="hidden"
-        )
-        return response.choices[0].message.content.strip().upper()
+        # Extract only the last word, then strip anything that isn't a letter
+        # (reasoning leakage can leave stray punctuation like "(WAIT")
+        word = re.sub(r'[^A-Za-z]', '', cleaned_text.split()[-1]).upper()
+        return word if word else "BANANA"
     except Exception:
         return "BANANA" # Reliable fallback
 
@@ -247,7 +239,8 @@ else:
                         model=LEVEL_CONFIGS[st.session_state.level]["model"],
                         messages=[{"role": "user", "content": bulletproof_prompt}],
                         max_tokens=150,
-                        temperature=0.7
+                        temperature=0.7,
+                        reasoning_format="hidden", # stop the raw reasoning trace from leaking into the hint
                     )
                     
                     # Reasoning models (e.g. qwen) can wrap output in <think> tags -
@@ -326,6 +319,7 @@ else:
                     model=config['model'],
                     messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
                     max_tokens=450,
+                    reasoning_format="hidden", # same fix as the hint/password calls - stop raw reasoning leaking into chat
                 )
                 
                 raw_answer = response.choices[0].message.content
