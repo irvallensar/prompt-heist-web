@@ -261,6 +261,10 @@ else:
                 except Exception as e:
                     st.error(f"Bribery failed: {str(e)}")
 
+        if st.button("Back to Menu"):
+            st.session_state.page = "landing"
+            st.rerun()
+
     # Main Game Area
     st.title(f"PROMPT HEIST - {st.session_state.level} Mode")
 
