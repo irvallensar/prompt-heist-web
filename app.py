@@ -100,7 +100,6 @@ def reset_game(level):
         st.session_state.password = generate_dynamic_password(level)
 
 # 3. Session state init
-# We do this FIRST to prevent "AttributeError"
 if "page" not in st.session_state:
     st.session_state.page = "landing"
 if "messages" not in st.session_state:
