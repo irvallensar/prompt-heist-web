@@ -1,6 +1,18 @@
 import streamlit as st
-from groq import Groq
 import os
+import sys
+from pathlib import Path
+
+_FALLBACK_SITE_PACKAGES = Path(
+    "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages"
+)
+try:
+    from groq import Groq
+except ModuleNotFoundError:
+    if _FALLBACK_SITE_PACKAGES.exists():
+        sys.path.append(str(_FALLBACK_SITE_PACKAGES))
+    from groq import Groq
+
 import time
 import random
 import re # ADD THIS IMPORT
@@ -8,7 +20,7 @@ from dotenv import load_dotenv
 
 # 1. Initial Setup
 load_dotenv()
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY") or "UNSET_GROQ_API_KEY")
 
 # 1. Level Configuration
 from game_config import LEVEL_CONFIGS
@@ -171,18 +183,41 @@ st.markdown("""
         margin-bottom: 0.2em !important;
     }
 
-    /* 6. Remove sidebar scroll */
+    /* 6. Enable sidebar vertical scroll */
+    [data-testid="stSidebar"],
     [data-testid="stSidebar"] > div:first-child,
+    [data-testid="stSidebarContent"],
     [data-testid="stSidebarUserContent"] {
-        overflow-y: hidden !important; /* Locks the scroll */
-        scrollbar-width: none !important; /* Hides scrollbar in Firefox */
-        -ms-overflow-style: none !important; /* Hides scrollbar in IE/Edge */
+        overflow-y: auto !important; /* Enables vertical scrolling */
+        scrollbar-width: thin !important;
+        -ms-overflow-style: auto !important;
     }
     
-    /* Hides scrollbar in Chrome/Safari/Edge */
     [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar,
+    [data-testid="stSidebarContent"]::-webkit-scrollbar,
     [data-testid="stSidebarUserContent"]::-webkit-scrollbar {
-        display: none !important; 
+        display: block !important;
+        width: 6px !important;
+    }
+
+    [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar-thumb,
+    [data-testid="stSidebarContent"]::-webkit-scrollbar-thumb,
+    [data-testid="stSidebarUserContent"]::-webkit-scrollbar-thumb {
+        background-color: #555555 !important;
+        border-radius: 3px !important;
+    }
+
+    /* 7. Rename 'app' navigation link in sidebar to 'Prompt Heist Game' */
+    [data-testid="stSidebarNavItems"] > li:first-child a[data-testid="stSidebarNavLink"] span,
+    [data-testid="stSidebarNav"] ul > li:first-child a[data-testid="stSidebarNavLink"] span {
+        display: none !important;
+    }
+
+    [data-testid="stSidebarNavItems"] > li:first-child a[data-testid="stSidebarNavLink"]::after,
+    [data-testid="stSidebarNav"] ul > li:first-child a[data-testid="stSidebarNavLink"]::after {
+        content: "Prompt Heist Game" !important;
+        font-size: 0.875rem !important;
+        color: inherit !important;
     }
     </style>
     """, unsafe_allow_html=True)
